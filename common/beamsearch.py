@@ -1,11 +1,11 @@
 import os
 import heapq
-from typing import List
-from common.ai_class import Individual
-from common.simulate import run_simulation, calculate_score
+from typing import List, Callable
+from .ai_class import Individual, GeometryParams
+from .simulate import run_simulation, calculate_score
 
 def run_optimization_beam_search(
-        mutate_func: function,
+        mutate_func: Callable[[GeometryParams, dict, str], GeometryParams],
         initial_population: List[Individual],
         generations: int,
         beam_width: int,

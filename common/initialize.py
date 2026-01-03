@@ -1,5 +1,5 @@
 from typing import List
-from ai_class import Individual
+from .ai_class import Individual
 
 def initialize_population(size: int, initial_params: dict) -> List[Individual]:
     population = []

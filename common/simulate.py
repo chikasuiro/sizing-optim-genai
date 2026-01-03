@@ -1,6 +1,6 @@
 import os
 import re
-from common.ai_class import GeometryParams
+from .ai_class import GeometryParams
 
 freecad_python_path = os.environ.get('FREECAD_PYTHON_PATH',
                                      'C:/Program Files/FreeCAD 1.0/bin/python.exe')

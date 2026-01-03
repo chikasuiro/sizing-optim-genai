@@ -1,7 +1,7 @@
 from common.ai_class import GeometryParams
 from common.initialize import initialize_population
 from common.beamsearch import run_optimization_beam_search
-from gpt.config import *
+from .config import *
 
 def mutate_params_ai(current_params: dict, simulation_result: dict, goal: str) -> GeometryParams:
     
