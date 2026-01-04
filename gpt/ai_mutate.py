@@ -24,23 +24,22 @@ def mutate_params_ai(current_params: GeometryParams, simulation_result: dict, go
     '''
 
     if gemini_flag:
-        model = genai.GenerativeModel(
-            model_name=gemini_model,
-            generation_config={
+        response = client_gemini.models.generate_content(
+            model=gemini_model,
+            contents=prompt,
+            config={
                 'response_mime_type': 'application/json',
                 'response_schema': GeometryParams,
                 'temperature': 0.5,
             }
         )
-        response = model.generate_content(prompt)
-        try:
-            data = json.loads(response.text)
-            return GeometryParams(**data)
-        except Exception as e:
-            print(f'Gemini Error: {e}')
+        if response.parsed:
+            return response.parsed
+        else:
+            print('Error: Could not parse response.')
             return current_params
     else:  # Use OpenAI GPT model
-        completion = client.beta.chat.completions.parse(
+        completion = client_gpt.beta.chat.completions.parse(
             model=gpt_model,
             messages=[
                 {'role': 'system', 'content': 'あなたは構造最適化の専門家です。JSON形式で回答してください。'},

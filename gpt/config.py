@@ -1,14 +1,14 @@
 import os
 from dotenv import load_dotenv
 from openai import OpenAI
-import google.generativeai as genai
+from google import genai
 
 load_dotenv(os.pardir + '/.env')
 
-client = OpenAI(api_key=os.environ.get('OPENAI_API_KEY'))
-genai.configure(api_key=os.environ.get('GOOGLE_API_KEY'))
+client_gpt = OpenAI(api_key=os.environ.get('OPENAI_API_KEY'))
+client_gemini = genai.Client(api_key=os.environ.get('GOOGLE_API_KEY'))
 gpt_model = 'gpt-4o'
-gemini_model = 'gemini-1.5-flash'
+gemini_model = 'gemini-2.5-flash'
 gemini_flag = True
 
 pop_size = 3
