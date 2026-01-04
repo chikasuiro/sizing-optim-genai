@@ -24,9 +24,14 @@ def rewrite_macro(params: GeometryParams) -> None:
 def run_simulation(params: GeometryParams) -> dict:
     rewrite_macro(params)
     os.system(f'"{freecad_python_path}" ./freecad_macro.py')
+    if not os.path.exists('volume.txt') or not os.path.exists('0.log'):
+        return {'max_stress': float('inf'), 'volume': float('inf')}
     with open('volume.txt', 'r', encoding='utf-8') as f:
         lines = f.readlines()
-        volume = float(lines[0].strip())
+        if lines == []:
+            volume = float('inf')
+        else:
+            volume = float(lines[0].strip())
     with open('0.log', 'r', encoding='utf-8') as f:
         lines = f.readlines()
         line_global_sms_node = lines[-15].strip()
