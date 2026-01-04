@@ -3,14 +3,14 @@ from common.initialize import initialize_population
 from common.beamsearch import run_optimization_beam_search
 from .config import *
 
-def mutate_params_ai(current_params: dict, simulation_result: dict, goal: str) -> GeometryParams:
+def mutate_params_ai(current_params: GeometryParams, simulation_result: dict, goal: str) -> GeometryParams:
     
     prompt = f'''
     あなたは熟練した計算力学エンジニアです。
     現在の設計パラメータと解析結果は以下の通りです。
     
     [現在のパラメータ]
-    {current_params}
+    {current_params.model_dump_json(indent=4)}
     
     [解析結果]
     最大応力: {simulation_result['max_stress']} MPa
@@ -43,7 +43,7 @@ def main():
         'fillet_size': 4.00,
         'reasoning': 'オリジナルパラメーター',
     }
-    initial_population = initialize_population(pop_size, params)
+    initial_population = initialize_population(pop_size, GeometryParams(**params))
     run_optimization_beam_search(
         mutate_func=mutate_params_ai,
         initial_population=initial_population,

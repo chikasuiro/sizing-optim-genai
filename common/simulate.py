@@ -11,7 +11,7 @@ def rewrite_macro(params: GeometryParams, dst_dir: str = dst_dir) -> None:
     with open(freecad_macro, 'r', encoding='utf-8') as f:
         macro_content = f.read()
 
-    param_str = f'params = {params.model_dump_json()}'
+    param_str = f'params = {params.model_dump_json(indent=4)}'
     if 'params =' in macro_content:
         macro_content = re.sub(r'params = \{.*?\}', param_str, macro_content, flags=re.DOTALL)
     else:

@@ -1,7 +1,7 @@
 from typing import List
-from .ai_class import Individual
+from .ai_class import GeometryParams, Individual
 
-def initialize_population(size: int, initial_params: dict) -> List[Individual]:
+def initialize_population(size: int, initial_params: GeometryParams) -> List[Individual]:
     population = []
     for _ in range(size):
         individual = Individual(

@@ -15,6 +15,7 @@ params = {
     'radius': 11.000000,
     'thickness': 20.000000,
     'fillet_size': 4.00,
+    'reasoning': 'オリジナルパラメーター',
 }
 
 # variables to be optimized
