@@ -4,10 +4,9 @@ from .ai_class import GeometryParams
 
 freecad_python_path = os.environ.get('FREECAD_PYTHON_PATH',
                                      'C:/Program Files/FreeCAD 1.0/bin/python.exe')
-freecad_macro = '../data/freecad_macro.py'
-dst_dir = '../data/temp/'
+freecad_macro = __file__.replace('common/simulate.py', 'data/freecad_macro.py')
 
-def rewrite_macro(params: GeometryParams, dst_dir: str = dst_dir) -> None:
+def rewrite_macro(params: GeometryParams) -> None:
     with open(freecad_macro, 'r', encoding='utf-8') as f:
         macro_content = f.read()
 
@@ -17,18 +16,13 @@ def rewrite_macro(params: GeometryParams, dst_dir: str = dst_dir) -> None:
     else:
         macro_content = param_str + '\n' + macro_content
 
-    with open(os.path.join(dst_dir, 'freecad_macro.py'), 'w', encoding='utf-8') as f:
+    with open('./freecad_macro.py', 'w', encoding='utf-8') as f:
         f.write(macro_content)
     return None
 
-def run_simulation(params: GeometryParams = None, dst_dir: str = dst_dir) -> dict:
-    if params:
-        rewrite_macro(params, dst_dir)
-        print(f'解析実行: {params}')
-    else:
-        print('解析実行: オリジナルパラメーター')
-    os.chdir(dst_dir)
-    os.system(f'"{freecad_python_path}" freecad_macro.py')
+def run_simulation(params: GeometryParams) -> dict:
+    rewrite_macro(params)
+    os.system(f'"{freecad_python_path}" ./freecad_macro.py')
     with open('volume.txt', 'r', encoding='utf-8') as f:
         lines = f.readlines()
         volume = float(lines[0].strip())
