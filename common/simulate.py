@@ -4,7 +4,8 @@ from .ai_class import GeometryParams
 
 freecad_python_path = os.environ.get('FREECAD_PYTHON_PATH',
                                      'C:/Program Files/FreeCAD 1.0/bin/python.exe')
-freecad_macro = __file__.replace('common/simulate.py', 'data/freecad_macro.py')
+freecad_macro = __file__.replace('common/simulate.py', 'data/freecad_macro.py') \
+    .replace('common\\simulate.py', 'data\\freecad_macro.py')
 
 def rewrite_macro(params: GeometryParams) -> None:
     with open(freecad_macro, 'r', encoding='utf-8') as f:

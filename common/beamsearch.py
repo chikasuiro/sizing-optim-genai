@@ -23,7 +23,7 @@ def run_optimization_beam_search(
         for idx, parent in enumerate(current_population):
             if initial_flag:
                 dirname = f'G{gen:02d}ID{idx+1:02d}'
-                os.mkdir(dirname)
+                os.makedirs(dirname, exist_ok=True)
                 os.chdir(dirname)
                 result = run_simulation(params=parent.params)
                 parent.score = calculate_score(result)
@@ -44,7 +44,7 @@ def run_optimization_beam_search(
                 print(f'次のパラメータ: {new_params}')
 
                 dirname = f'G{gen+1:02d}ID{idx*2+i+1:02d}'
-                os.mkdir(dirname)
+                os.makedirs(dirname, exist_ok=True)
                 os.chdir(dirname)
                 new_result = run_simulation(new_params)
                 score = calculate_score(new_result)
