@@ -29,9 +29,6 @@ def run_optimization_beam_search(
                 parent.score = calculate_score(result)
                 parent.history += f'S -> G{gen+1:02d}ID{idx+1:02d}'
                 os.chdir(os.pardir)
-                initial_flag = False
-            else:
-                continue
 
             for i in range(2):
                 print(f'Parent ID {idx+1} の変異ステップ {i+1}')
@@ -57,6 +54,8 @@ def run_optimization_beam_search(
                 )
                 next_candidates.append(child)
 
+        if initial_flag:
+            initial_flag = False
         current_population = heapq.nlargest(beam_width, next_candidates, key=lambda x: x.score)
         print(f'Survivor indices: {[p.history[-7:] for p in current_population]}')
         print(f'Top score: {current_population[0].score}')
