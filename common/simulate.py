@@ -41,5 +41,5 @@ def run_simulation(params: GeometryParams) -> dict:
 def calculate_score(simulation_result: dict) -> float:
     max_stress = simulation_result['max_stress']
     volume = simulation_result['volume']
-    score = -1 * max_stress - 0.01 * volume
+    score = -1000 * max_stress - 0.001 * volume
     return score

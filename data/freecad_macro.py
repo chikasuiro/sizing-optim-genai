@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+import time
 import math
 import FreeCAD
 import Part
@@ -25,7 +26,7 @@ thickness = params['thickness']
 fillet_size = params['fillet_size']
 
 # angle in radian
-angle0 = 0.0
+angle0 = math.pi * 0.1
 angle1 = math.pi * 0.5
 angle2 = math.pi * 1.0
 angle3 = math.pi * 1.5
@@ -41,21 +42,29 @@ sketch_obj0.MapMode = 'FlatFace'
 ## frame
 sketch_obj0.addGeometry(Part.LineSegment(App.Vector(0.000000, 0.000000, 0.000000),App.Vector(200.000000, 0.000000, 0.000000)),False)
 sketch_obj0.addConstraint(Sketcher.Constraint('Horizontal', 0))
+doc.recompute()
 sketch_obj0.addGeometry(Part.LineSegment(App.Vector(200.000000, 0.000000, 0.000000),App.Vector(200.000000, 50.000000, 0.000000)),False)
 sketch_obj0.addConstraint(Sketcher.Constraint('Vertical', 1))
+doc.recompute()
 sketch_obj0.addGeometry(Part.LineSegment(App.Vector(200.000000, 50.000000, 0.000000),App.Vector(0.000000, 50.000000, 0.000000)),False)
 sketch_obj0.addConstraint(Sketcher.Constraint('Horizontal', 2))
+doc.recompute()
 sketch_obj0.addGeometry(Part.LineSegment(App.Vector(0.000000, 50.000000, 0.000000),App.Vector(0.000000, 0.000000, 0.000000)),False)
 sketch_obj0.addConstraint(Sketcher.Constraint('Vertical', 3))
+doc.recompute()
 sketch_obj0.addConstraint(Sketcher.Constraint('Coincident', 0, 2, 1, 1))
 sketch_obj0.addConstraint(Sketcher.Constraint('Coincident', 1, 2, 2, 1))
 sketch_obj0.addConstraint(Sketcher.Constraint('Coincident', 2, 2, 3, 1))
 sketch_obj0.addConstraint(Sketcher.Constraint('Coincident', 3, 2, 0, 1))
 sketch_obj0.addConstraint(Sketcher.Constraint('Coincident', 0, 1, -1, 1))
+doc.recompute()
 sketch_obj0.addConstraint(Sketcher.Constraint('DistanceX',2,2,2,1,200.000000))
-sketch_obj0.setDatum(9,App.Units.Quantity('200.000000 mm'))
+doc.recompute()
+# sketch_obj0.setDatum(9,App.Units.Quantity('200.000000 mm'))
 sketch_obj0.addConstraint(Sketcher.Constraint('DistanceY',3,2,3,1,50.000000))
-sketch_obj0.setDatum(10,App.Units.Quantity('50.000000 mm'))
+doc.recompute()
+# sketch_obj0.setDatum(10,App.Units.Quantity('50.000000 mm'))
+time.sleep(0.1)
 ## hole
 sketch_obj0.addGeometry(Part.ArcOfCircle(Part.Circle(
      App.Vector(175.000000-length_oval, 25.000000, 0.000000),
@@ -75,14 +84,20 @@ sketch_obj0.addConstraint(Sketcher.Constraint('Tangent', 5, 2, 6, 2))
 sketch_obj0.addConstraint(Sketcher.Constraint('Tangent', 5, 1, 7, 2))
 sketch_obj0.addConstraint(Sketcher.Constraint('Equal', 4, 5))
 sketch_obj0.addConstraint(Sketcher.Constraint('Horizontal', 6))
+doc.recompute()
 sketch_obj0.addConstraint(Sketcher.Constraint('DistanceX',5,3,0,2,25.000000))
-sketch_obj0.setDatum(17,App.Units.Quantity('25.000000 mm'))
+doc.recompute()
+# sketch_obj0.setDatum(17,App.Units.Quantity('25.000000 mm'))
 sketch_obj0.addConstraint(Sketcher.Constraint('DistanceX',4,3,5,3,length_oval))
-sketch_obj0.setDatum(18,App.Units.Quantity(f'{length_oval} mm'))
+doc.recompute()
+# sketch_obj0.setDatum(18,App.Units.Quantity(f'{length_oval} mm'))
 sketch_obj0.addConstraint(Sketcher.Constraint('Radius',5,radius))
-sketch_obj0.setDatum(19,App.Units.Quantity(f'{radius} mm'))
+doc.recompute()
+# sketch_obj0.setDatum(19,App.Units.Quantity(f'{radius} mm'))
 sketch_obj0.addConstraint(Sketcher.Constraint('DistanceY',0,2,5,3,25.000000))
-sketch_obj0.setDatum(20,App.Units.Quantity('25.000000 mm'))
+doc.recompute()
+# sketch_obj0.setDatum(20,App.Units.Quantity('25.000000 mm'))
+time.sleep(0.1)
 ## pad
 pad_obj = body_obj.newObject('PartDesign::Pad','Pad')
 pad_obj.Profile = (sketch_obj0, ['',])
@@ -91,6 +106,7 @@ pad_obj.Direction = (0, 0, 1)
 pad_obj.ReferenceAxis = (sketch_obj0, ['N_Axis'])
 doc.recompute()
 sketch_obj0.Visibility = False
+time.sleep(0.1)
 
 # add new sketch
 sketch_obj1 = doc.getObject('Body').newObject('Sketcher::SketchObject','Sketch001')
@@ -103,23 +119,30 @@ sketch_obj1.addGeometry(Part.LineSegment(
 sketch_obj1.addConstraint(Sketcher.Constraint('Vertical', 1))  # -> 0
 sketch_obj1.addConstraint(Sketcher.Constraint('Tangent',1, 1, 0, 2))  # -> 1
 sketch_obj1.addConstraint(Sketcher.Constraint('PointOnObject', 1, 2, -1))  # -> 2
+doc.recompute()
 sketch_obj1.addGeometry(Part.LineSegment(
      App.Vector(30.000000-radius, 0.000000, 0.000000),
      App.Vector(30.000000, 0.000000, 0.000000)),False)  # -> 2
 sketch_obj1.addConstraint(Sketcher.Constraint('Horizontal', 2))  # -> 3
 sketch_obj1.addConstraint(Sketcher.Constraint('Coincident', 2, 1, 1, 2))  # -> 4
+doc.recompute()
 sketch_obj1.addConstraint(Sketcher.Constraint('DistanceX',-1,1,0,3,30.000000))  # -> 5
-sketch_obj1.setDatum(5,App.Units.Quantity('30.000000 mm'))
+doc.recompute()
+# sketch_obj1.setDatum(5,App.Units.Quantity('30.000000 mm'))
 sketch_obj1.addConstraint(Sketcher.Constraint('DistanceY',-1,1,0,3,25.000000))  # -> 6
-sketch_obj1.setDatum(6,App.Units.Quantity('25.000000 mm'))
+doc.recompute()
+# sketch_obj1.setDatum(6,App.Units.Quantity('25.000000 mm'))
 sketch_obj1.addConstraint(Sketcher.Constraint('Radius',0,radius))  # -> 7
-sketch_obj1.setDatum(7,App.Units.Quantity(f'{radius} mm'))
+doc.recompute()
+# sketch_obj1.setDatum(7,App.Units.Quantity(f'{radius} mm'))
 sketch_obj1.addGeometry(Part.LineSegment(App.Vector(30.000000, 36.000000, 0.000000),App.Vector(30.000000, 0.000000, 0.000000)),False)  # -> 3
 sketch_obj1.addConstraint(Sketcher.Constraint('Vertical', 3))  # -> 8
 sketch_obj1.addConstraint(Sketcher.Constraint('Coincident', 3, 1, 0, 1))  # -> 9
 sketch_obj1.addConstraint(Sketcher.Constraint('Coincident', 3, 2, 2, 2))  # -> 10
 sketch_obj1.addConstraint(Sketcher.Constraint('DistanceX',-1,1,0,1,30.000000))  # -> 11
-sketch_obj1.setDatum(11,App.Units.Quantity('30.000000 mm'))
+doc.recompute()
+# sketch_obj1.setDatum(11,App.Units.Quantity('30.000000 mm'))
+time.sleep(0.1)
 ## pocket
 pocket_obj0 = doc.getObject('Body').newObject('PartDesign::Pocket','Pocket')
 pocket_obj0.Profile = (sketch_obj1, ['',])
@@ -129,6 +152,7 @@ pocket_obj0.ReferenceAxis = (sketch_obj1, ['N_Axis'])
 doc.recompute()
 pad_obj.Visibility = False
 sketch_obj1.Visibility = False
+time.sleep(0.1)
 
 # add new sketch
 sketch_obj2 = doc.getObject('Body').newObject('Sketcher::SketchObject','Sketch002')
@@ -139,25 +163,35 @@ sketch_obj2.addGeometry(Part.LineSegment(
      App.Vector(30.000000, 25.000000+radius, 0.000000)),False)  # -> 0
 sketch_obj2.addConstraint(Sketcher.Constraint('Vertical', 0))  # -> 0
 sketch_obj2.addConstraint(Sketcher.Constraint('PointOnObject', 0, 1, -1))  # -> 1
+doc.recompute()
 sketch_obj2.addGeometry(Part.ArcOfCircle(Part.Circle(App.Vector(30.000000, 25.000000, 0.000000), App.Vector(0.000000, 0.000000, 1.000000), radius), angle0, angle1),False)  # -> 1
 sketch_obj2.addConstraint(Sketcher.Constraint('PointOnObject', 1, 3, 0))  # -> 2
 sketch_obj2.addConstraint(Sketcher.Constraint('Coincident', 1, 2, 0, 2))  # -> 3
+doc.recompute()
 sketch_obj2.addGeometry(Part.LineSegment(App.Vector(30.000000, 0.000000, 0.000000),App.Vector(48.000000, 0.000000, 0.000000)),False)  # -> 2
 sketch_obj2.addConstraint(Sketcher.Constraint('PointOnObject', 2, 2, -1))  # -> 4
 sketch_obj2.addConstraint(Sketcher.Constraint('Coincident', 2, 1, 0, 1))  # -> 5
+doc.recompute()
 sketch_obj2.addGeometry(Part.LineSegment(
      App.Vector(48.000000, 0.000000, 0.000000),
      App.Vector(30.000000+radius, 25.000000, 0.000000)),False)  # -> 3
 sketch_obj2.addConstraint(Sketcher.Constraint('Coincident', 3, 1, 2, 2))  # -> 6
 sketch_obj2.addConstraint(Sketcher.Constraint('Tangent',1,1,3,2))  # -> 7
+doc.recompute()
 sketch_obj2.addConstraint(Sketcher.Constraint('Angle',0,2,3,2,15.000000))  # -> 8
+doc.recompute()
 sketch_obj2.setDatum(8,App.Units.Quantity('15.000000 deg'))
+doc.recompute()
 sketch_obj2.addConstraint(Sketcher.Constraint('DistanceX',-1,1,1,3,30.000000))  # -> 9
-sketch_obj2.setDatum(9,App.Units.Quantity('30.000000 mm'))
+doc.recompute()
+# sketch_obj2.setDatum(9,App.Units.Quantity('30.000000 mm'))
 sketch_obj2.addConstraint(Sketcher.Constraint('DistanceY',-1,1,1,3,25.000000))  # -> 10
-sketch_obj2.setDatum(10,App.Units.Quantity('25.000000 mm'))
+doc.recompute()
+# sketch_obj2.setDatum(10,App.Units.Quantity('25.000000 mm'))
 sketch_obj2.addConstraint(Sketcher.Constraint('Radius',1,radius))  # -> 11
-sketch_obj2.setDatum(11,App.Units.Quantity(f'{radius} mm'))
+doc.recompute()
+# sketch_obj2.setDatum(11,App.Units.Quantity(f'{radius} mm'))
+time.sleep(0.1)
 ## pocket
 pocket_obj1 = doc.getObject('Body').newObject('PartDesign::Pocket','Pocket001')
 pocket_obj1.Profile = (sketch_obj2, ['',])
@@ -167,6 +201,7 @@ pocket_obj1.ReferenceAxis = (sketch_obj2, ['N_Axis'])
 doc.recompute()
 pocket_obj0.Visibility = False
 sketch_obj2.Visibility = False
+time.sleep(0.1)
 
 # chamfer and fillet
 chamfer_obj0 = doc.addObject('Part::Chamfer','Chamfer')
@@ -188,6 +223,7 @@ fillet_obj.Base = chamfer_obj1
 fillet_obj.Edges = [(36,fillet_size,fillet_size),]
 doc.recompute()
 chamfer_obj1.Visibility = False
+time.sleep(0.1)
 
 # output volume
 volume_txt = Path('volume.txt')
