@@ -1,5 +1,6 @@
 import os
 import re
+import subprocess
 from .ai_class import GeometryParams
 
 freecad_python_path = os.environ.get('FREECAD_PYTHON_PATH',
@@ -23,7 +24,10 @@ def rewrite_macro(params: GeometryParams) -> None:
 
 def run_simulation(params: GeometryParams) -> dict:
     rewrite_macro(params)
-    os.system(f'"{freecad_python_path}" ./freecad_macro.py')
+    clean_env = os.environ.copy()
+    for var in ['PYTHONPATH', 'PYTHONHOME', 'VIRTUAL_ENV']:
+        clean_env.pop(var, None)
+    subprocess.run([freecad_python_path, './freecad_macro.py'], env=clean_env)
     if not os.path.exists('volume.txt') or not os.path.exists('0.log'):
         return {'max_stress': float('inf'), 'volume': float('inf')}
     with open('volume.txt', 'r', encoding='utf-8') as f:
