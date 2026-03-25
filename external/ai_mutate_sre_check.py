@@ -19,7 +19,7 @@ print("===========================\n")
 from common.ai_class import GeometryParams
 from common.initialize import initialize_population
 from common.beamsearch import run_optimization_beam_search
-from gpt.config import *
+from external.config import *
 
 def mutate_params_ai(current_params: GeometryParams, simulation_result: dict, goal: str) -> GeometryParams:
     
