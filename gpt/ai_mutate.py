@@ -1,4 +1,3 @@
-import json
 from common.ai_class import GeometryParams
 from common.initialize import initialize_population
 from common.beamsearch import run_optimization_beam_search
