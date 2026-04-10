@@ -38,3 +38,7 @@ cd external
 ```powershell
 python ai_mutate.py
 ```
+
+## Note
+
+形状・寸法は、[ミスミ 型開き防止プレート -切り欠き全長指定タイプ-](https://jp.misumi-ec.com/vona2/detail/110200110620/)を利用した
