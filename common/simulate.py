@@ -37,9 +37,10 @@ def run_simulation(params: GeometryParams) -> dict:
         else:
             volume = float(lines[0].strip())
     with open('0.log', 'r', encoding='utf-8') as f:
-        lines = f.readlines()
-        line_global_sms_node = lines[-15].strip()
-        max_stress = float(line_global_sms_node.split()[1])
+        log_content = f.read()
+    log_blocks = log_content.split('Global Summary @Node')
+    sms_match = re.search(r'//SMS\s+([\d.E+\-]+)', log_blocks[-1]) if len(log_blocks) >= 2 else None
+    max_stress = float(sms_match.group(1)) if sms_match else float('inf')
     return {'max_stress': max_stress, 'volume': volume}
 
 def calculate_score(simulation_result: dict) -> float:
